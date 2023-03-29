@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flying Boi The Reboot</title>
+  <style>
+    canvas {
+      background-color: skyblue;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="360" height="640"></canvas>
+  <script>
+    // Initialize canvas and context
+    var canvas = document.getElementById("canvas");
+    var ctx = canvas.getContext("2d");
+
+    // Set up player object
+    var player = {
+      x: 150,
+      y: 550,
+      width: 60,
+      height: 60,
+      color: "black",
+      speed: 10,
+    };
+
+    // Set up cloud object
+    var cloud = {
+      x: 0,
+      y: -50,
+      width: 50,
+      height: 50,
+      color: "white",
+      speed: 5,
+    };
+
+    // Draw player on canvas
+    function drawPlayer() {
+      ctx.fillStyle = player.color;
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    // Draw cloud on canvas
+    function drawCloud() {
+      ctx.fillStyle = cloud.color;
+      ctx.fillRect(cloud.x, cloud.y, cloud.width, cloud.height);
+    }
+
+    // Move player left or right on key press
+    document.addEventListener("keydown", function(event) {
+      if (event.code === "ArrowLeft") {
+        player.x -= player.speed;
+      }
+      else if (event.code === "ArrowRight") {
+        player.x += player.speed;
+      }
+    });
+
+    // Update game state and redraw canvas
+    function update() {
+      // Move cloud downwards to give illusion of player moving upwards
+      cloud.y += cloud.speed;
+      if (cloud.y > canvas.height) {
+        cloud.x = Math.random() * canvas.width;
+        cloud.y = -50;
+      }
+
+      // Redraw canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawCloud();
+
+      // Request next frame
+      requestAnimationFrame(update);
+    }
+
+    // Start game loop
+    requestAnimationFrame(update);
+  </script>
+</body>
+</html>
